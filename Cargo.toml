@@ -1,0 +1,9 @@
+[package]
+name = "watchly"
+version = "0.1.0"
+authors = ["Louis Parent"]
+description = "CLI tool to manage chronometers and tasks"
+edition = "2021"
+
+[dependencies]
+clap = { version = "4.4.2", features = ["derive"] }
