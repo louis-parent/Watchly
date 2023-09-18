@@ -1,7 +1,9 @@
 mod commands;
+mod watchly;
 
 use clap::Parser;
 use commands::Commands;
+use watchly::Watchly;
 
 #[derive(Parser)]
 #[command(author, version, about)]
@@ -13,7 +15,7 @@ struct Cli {
 fn main() {
     let cli = Cli::parse();
 
-    match &cli.command {
-        _ => println!("Hello World")
+    match cli.command {
+        Commands::Init{ client_name, client_address, hourly_rate } => Watchly::initialize(client_name, client_address, hourly_rate).expect("Failed to initialize Watchly project")
     }
 }
