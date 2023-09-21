@@ -15,5 +15,5 @@ pub enum Commands {
         /// Default hourly rate to be apply in this project
         #[arg(long)]
         hourly_rate: Option<f64>
-    },
+    }
 }

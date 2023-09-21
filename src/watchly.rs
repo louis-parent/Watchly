@@ -1,29 +1,32 @@
-pub mod initializer;
+pub mod configuration;
 
+use std::fs;
+use std::error::Error;
 use std::path::PathBuf;
-use home;
+use configuration::Configuration;
 
 const STORAGE_DIR: &str = ".watchly";
-const SETTINGS_FILE: &str = "settings.toml";
 
 pub struct Watchly {
 
 }
 
 impl Watchly {
-    fn local_storage_path() -> PathBuf {
+    pub fn initialize(client_name: Option<String>, client_address: Option<String>, hourly_rate: Option<f64>) -> Result<(), Box<dyn Error>> {
+        fs::create_dir(Watchly::storage_path())?;
+
+        let mut configuration = Configuration::load();
+
+        configuration.client.name = client_name;
+        configuration.client.address = client_address;
+        configuration.hourly_rate = hourly_rate;
+
+        configuration.save()?;
+
+        Ok(())
+    }
+
+    fn storage_path() -> PathBuf {
         PathBuf::from(STORAGE_DIR)
-    }
-
-    fn global_storage_path() -> PathBuf {
-        home::home_dir().expect("Cannot find home directory").join(STORAGE_DIR)
-    }
-
-    fn local_settings_path() -> PathBuf {
-        Watchly::local_storage_path().join(SETTINGS_FILE)
-    }
-
-    fn global_settings_path() -> PathBuf {
-        Watchly::global_storage_path().join(SETTINGS_FILE)
     }
 }

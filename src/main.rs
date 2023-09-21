@@ -16,6 +16,10 @@ fn main() {
     let cli = Cli::parse();
 
     match cli.command {
-        Commands::Init{ client_name, client_address, hourly_rate } => Watchly::initialize(client_name, client_address, hourly_rate).expect("Failed to initialize Watchly project")
+        Commands::Init{ client_name, client_address, hourly_rate } => Watchly::initialize(client_name, client_address, hourly_rate).map_or_else(|_| {
+            eprintln!("Cannot initialize Watchly, maybe watchly is already initialized");
+        }, |_| {
+            println!("New Watchly project initialized");
+        })
     }
 }
